@@ -14,6 +14,8 @@ headers=[
         ('User-Agent', "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1"),  #Keep this as last because of pop used
 ]
 
+proxy_type = input("https? yes or no: ")
+
 opener=urllib.request.build_opener()
 opener.addheaders=headers
 
@@ -30,29 +32,9 @@ allRows = proxyListTable.findAll("tr")
 proxies=[]
 for row in allRows:
     rowData = row.findAll('td')
-    proxyData = {}
-    if rowData and rowData[4] and rowData[4].text == 'elite proxy':
-        proxyData['ip'] = rowData[0].text
-        proxyData['port'] = rowData[1].text
-        proxyData['https'] = rowData[6].text
-        proxies.append(proxyData)
-
-#random_proxies = random.sample(proxies,k=10)
-# random_proxies = proxies[:10]
-random_proxies = proxies
-proxyStrings = []
-for proxy in random_proxies:
     url = ''
-    if proxy['https'] == 'yes':
-        # url = url + 'https'
-        # url = url + '://' + proxy['ip'] + ':' + proxy['port']
-        url = url +  proxy['ip'] + ':' + proxy['port']
+    if rowData and rowData[4] and rowData[4].text == 'elite proxy' and rowData[6].text == proxy_type:
+        url = url + rowData[0].text + ':' + rowData[1].text
+        proxies.append(url)
 
-        proxyStrings.append(url)
-    # else:
-    #     url = url + 'http'
-            
-    # url = url + '://' + proxy['ip'] + ':' + proxy['port']
-    # proxyStrings.append(url)
-
-print(proxyStrings)
+print(proxies)
